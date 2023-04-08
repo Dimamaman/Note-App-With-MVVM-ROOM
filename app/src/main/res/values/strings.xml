@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">My Note</string>
+    <string name="trash">Trash</string>
+    <string name="title">Siz %s titleni o\'shirishni xohlaysizmi?</string>
+</resources>
