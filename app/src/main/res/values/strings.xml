@@ -3,4 +3,11 @@
     <string name="trash">Trash</string>
     <string name="title">Siz %s titleni o\'shirishni xohlaysizmi?</string>
     <string name="reminder">Reminder</string>
+    <string name="title_edit">Title</string>
+    <string name="content">Content</string>
+    <string name="delete_note">Delete Note</string>
+    <string name="recover_note">Recover Note</string>
+    <string name="cancel">Cancel</string>
+    <string name="okay">Okay</string>
+    <string name="add">Add</string>
 </resources>

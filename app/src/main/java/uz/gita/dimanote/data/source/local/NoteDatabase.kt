@@ -25,9 +25,7 @@ abstract class NoteDatabase : RoomDatabase() {
                     .allowMainThreadQueries().build()
             }
         }
-
         fun getInstance() = instance
-
 
         val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
@@ -36,6 +34,4 @@ abstract class NoteDatabase : RoomDatabase() {
             }
         }
     }
-
-
 }

@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -71,7 +72,15 @@ class AddNoteFragment : Fragment(R.layout.fragment_add) {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_edit -> {
-                        showReminderDialog()
+                        if (binding.etTitle.text.toString().isEmpty()) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Title must not be empty",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            showReminderDialog()
+                        }
                         true
                     }
                     else -> {
@@ -90,14 +99,14 @@ class AddNoteFragment : Fragment(R.layout.fragment_add) {
         val time = DataConverter.getCurrentTime()
 
         if (title.isEmpty()) {
-            binding.etTitle.error = "required"
+            binding.etTitle.error = "Title must not be empty"
             binding.etTitle.setTextColor(Color.RED)
             binding.etTitle.requestFocus()
             return true
         }
 
         if (content.isEmpty()) {
-            binding.etContent.error = "required"
+            binding.etContent.error = "Title must not be empty"
             binding.etContent.setTextColor(Color.RED)
             binding.etContent.requestFocus()
             return true
