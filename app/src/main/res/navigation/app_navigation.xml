@@ -4,52 +4,73 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_navigation"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="uz.gita.dimanote.presentation.screen.home.HomeFragment"
-        android:label="HomeFragment"
+        android:label="Home"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_addNote"
-            app:destination="@id/addNote"
+            app:destination="@id/addNote" />
 
-            app:enterAnim="@anim/slide_in_right"
+        <!--app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"-->
+        <action
+            android:id="@+id/action_homeFragment_to_trashFragment"
+            app:destination="@id/trashFragment"/>
+
+            <!--app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"-->
+
+        <action
+            android:id="@+id/action_homeFragment_to_editFragment"
+            app:destination="@id/editFragment"/>
+            <!--app:enterAnim="@anim/slide_in_right"
+
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-
-            app:popUpTo="@id/addNote"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_homeFragment_to_trashFragment"
-            app:destination="@id/trashFragment"
-
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popUpToInclusive="false"-->
     </fragment>
 
     <fragment
         android:id="@+id/addNote"
-        android:name="uz.gita.dimanote.presentation.screen.addnote.AddNote"
-        android:label="AddNote"
+        android:name="uz.gita.dimanote.presentation.screen.addnote.AddNoteFragment"
+        android:label="Add Note"
         tools:layout="@layout/fragment_add">
-        <action
-            android:id="@+id/action_addNote_to_homeFragment"
-            app:destination="@id/homeFragment"
 
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right"
-
-            />
 
     </fragment>
     <fragment
         android:id="@+id/trashFragment"
         android:name="uz.gita.dimanote.presentation.screen.trash.TrashFragment"
-        android:label="TrashFragment"
+        android:label="Note in Trash"
         tools:layout="@layout/fragment_trash"/>
+
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="uz.gita.dimanote.presentation.screen.edit.EditFragment"
+        android:label="Edit Note"
+        tools:layout="@layout/fragment_edit" >
+        <argument
+            android:name="note"
+            app:argType="uz.gita.dimanote.data.model.NoteData" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="uz.gita.dimanote.presentation.screen.splash.SplashFragment"
+        android:label="SplashFragment"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

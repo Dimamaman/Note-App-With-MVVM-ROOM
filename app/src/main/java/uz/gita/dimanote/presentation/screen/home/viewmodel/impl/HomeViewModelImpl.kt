@@ -8,7 +8,11 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.launch
 import uz.gita.dimanote.R
 import uz.gita.dimanote.data.model.NoteData
 import uz.gita.dimanote.domain.repository.AppRepository
@@ -21,6 +25,7 @@ class HomeViewModelImpl: ViewModel(), HomeViewModel {
     override val notesLiveData: LiveData<List<NoteData>> = repository.getNotes()
 
     override val openAddNoteScreenLiveData = MutableLiveData<Unit>()
+    override val openEditNoteScreenLiveData = MutableSharedFlow<NoteData>()
 
     override fun openAddNoteScreen() {
         openAddNoteScreenLiveData.value = Unit
@@ -46,5 +51,11 @@ class HomeViewModelImpl: ViewModel(), HomeViewModel {
 
         dialog.create()
         dialog.show()
+    }
+
+    override fun openEditNote(noteData: NoteData) {
+        viewModelScope.launch {
+            openEditNoteScreenLiveData.emit(noteData)
+        }
     }
 }

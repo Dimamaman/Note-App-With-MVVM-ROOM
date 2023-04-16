@@ -14,6 +14,11 @@ class HomeAdapter : ListAdapter<NoteData, HomeAdapter.HomeViewHolder>(DIFF_CALL_
         longClickListener = block
     }
 
+    private var editClickListener: ((NoteData) -> Unit)? = null
+    fun setEditClickListener(block: (NoteData) -> Unit) {
+        editClickListener = block
+    }
+
     inner class HomeViewHolder(private val binding: ItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -29,6 +34,10 @@ class HomeAdapter : ListAdapter<NoteData, HomeAdapter.HomeViewHolder>(DIFF_CALL_
                 textNoteTitle.text = noteData.title
                 textNoteContent.text = noteData.content
                 textNoteDate.text = noteData.createdAt.toString()
+            }
+
+            binding.constraint.setOnClickListener {
+                editClickListener?.invoke(noteData)
             }
         }
     }

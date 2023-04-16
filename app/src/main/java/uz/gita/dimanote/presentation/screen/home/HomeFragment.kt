@@ -1,13 +1,15 @@
 package uz.gita.dimanote.presentation.screen.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import kotlinx.coroutines.launch
 import uz.gita.dimanote.R
 import uz.gita.dimanote.databinding.FragmentHomeBinding
 import uz.gita.dimanote.presentation.adapter.HomeAdapter
@@ -35,6 +37,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             viewModel.showDialog(requireContext(), it.id, it.title)
         }
 
+        homeAdapter.setEditClickListener { note ->
+            viewModel.openEditNote(note)
+        }
+
         viewModel.notesLiveData.observe(viewLifecycleOwner) {
             if (it.isEmpty()) {
                 homeAdapter.submitList(it)
@@ -44,6 +50,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 recyclerViewHome.adapter = homeAdapter
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.openEditNoteScreenLiveData.collect {
+                val action = HomeFragmentDirections.actionHomeFragmentToEditFragment(it)
+                findNavController().navigate(action)
+            }
+        }
+
+//        viewModel.openEditNoteScreenLiveData.observe(this@HomeFragment) {
+//            val action = HomeFragmentDirections.actionHomeFragmentToEditFragment(it)
+//            findNavController().navigate(action)
+//        }
     }
 
     private val openAddNoteObserver = Observer<Unit> {
