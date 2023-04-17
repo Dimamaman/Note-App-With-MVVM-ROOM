@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
+import uz.gita.dimanote.data.source.local.sharedPref.MySharedPreference
 import uz.gita.dimanote.databinding.ActivityMainBinding
 
 
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                 Log.i("TTT: ", "Denied")
             }
         }
-    private var isNight = false
+    private var sharedPreference = MySharedPreference.getInstance()
 
     @SuppressLint("AppCompatMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +66,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+        if (sharedPreference.isNight) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            val colorDrawable = ColorDrawable(Color.parseColor("#3461FD"))
+            supportActionBar?.setBackgroundDrawable(colorDrawable)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            val colorDrawable = ColorDrawable(Color.parseColor("#888888"))
+            supportActionBar?.setBackgroundDrawable(colorDrawable)
+        }
+
+        /*when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> {
                 val colorDrawable = ColorDrawable(Color.parseColor("#888888"))
                 supportActionBar?.setBackgroundDrawable(colorDrawable)
@@ -74,7 +85,7 @@ class MainActivity : AppCompatActivity() {
                 val colorDrawable = ColorDrawable(Color.parseColor("#3461FD"))
                 supportActionBar?.setBackgroundDrawable(colorDrawable)
             }
-        }
+        }*/
 
 
         val navHostFragment =
@@ -101,13 +112,14 @@ class MainActivity : AppCompatActivity() {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     val colorDrawable = ColorDrawable(Color.parseColor("#888888"))
                     supportActionBar?.setBackgroundDrawable(colorDrawable)
-                    Log.d("DDD","Activity -> onCreate")
+                    sharedPreference.isNight = false
                     recreate()
                 }
                 R.id.light_mode -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     val colorDrawable = ColorDrawable(Color.parseColor("#3461FD"))
                     supportActionBar?.setBackgroundDrawable(colorDrawable)
+                    sharedPreference.isNight = true
                     recreate()
                 }
             }
