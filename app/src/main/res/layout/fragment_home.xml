@@ -20,6 +20,17 @@
         app:layout_constraintVertical_bias="0.5"
         tools:listitem="@layout/item_layout" />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image_empty_box"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/empty_box"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addNoteBtn"
         android:layout_width="wrap_content"

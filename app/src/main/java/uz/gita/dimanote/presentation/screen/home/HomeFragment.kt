@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import android.widget.SearchView
 import androidx.annotation.RequiresApi
 import androidx.core.view.MenuProvider
@@ -53,15 +54,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 )
                 val searchPlate: View = searchView.findViewById(searchPlateId)
                 searchPlate.setBackgroundResource(0)
+                searchView.isIconifiedByDefault = false
 
-                /*val magId = searchView.resources.getIdentifier("android:id/search_mag_icon", null, null)
+                val magId = searchView.resources.getIdentifier("android:id/search_mag_icon", null, null)
                 val magImage: ImageView = searchView.findViewById<View>(magId) as ImageView
 
                 val linearLayoutSearchView = magImage.parent as ViewGroup
                 linearLayoutSearchView.removeView(magImage)
 
-                magImage.visibility = View.GONE
-                magImage.setImageDrawable(null)*/
+//                magImage.visibility = View.GONE
+//                magImage.setImageDrawable(null)
 
                 searchView.onActionViewExpanded()
                 searchView.queryHint = "Search..."
@@ -105,15 +107,22 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         viewModel.notesLiveData.observe(viewLifecycleOwner) {
             Log.d("DDD","NOtes isEmpty -> ${it.isEmpty()}")
             if (it.isEmpty()) {
+                binding.imageEmptyBox.visibility = View.VISIBLE
                 homeAdapter.submitList(it)
                 recyclerViewHome.adapter = homeAdapter
             } else {
+                binding.imageEmptyBox.visibility = View.GONE
                 homeAdapter.submitList(it)
                 recyclerViewHome.adapter = homeAdapter
             }
         }
 
         viewModel.searchNotesLiveData.observe(viewLifecycleOwner) {
+            if (it.isEmpty()) {
+                binding.imageEmptyBox.visibility = View.VISIBLE
+            } else {
+                binding.imageEmptyBox.visibility = View.GONE
+            }
             homeAdapter.submitList(it)
         }
 

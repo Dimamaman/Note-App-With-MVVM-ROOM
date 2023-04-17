@@ -45,10 +45,11 @@ class TrashFragment : Fragment(R.layout.fragment_trash) {
 
         viewModel.notesInTrash.observe(viewLifecycleOwner) {
             if (it.isEmpty()) {
-                Toast.makeText(requireContext(), "Something", Toast.LENGTH_SHORT).show()
+                binding.imageRecyclerBin.visibility = View.VISIBLE
                 trashAdapter.submitList(it)
                 recyclerViewTrash.adapter = trashAdapter
             } else {
+                binding.imageRecyclerBin.visibility = View.GONE
                 trashAdapter.submitList(it)
                 recyclerViewTrash.adapter = trashAdapter
             }

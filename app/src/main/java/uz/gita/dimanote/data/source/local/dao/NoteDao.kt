@@ -21,7 +21,7 @@ interface NoteDao {
     @Delete
     fun deleteNotes(vararg notes: NoteEntity)
 
-    @Query("SELECT * FROM Notes WHERE on_trash=0")
+    @Query("SELECT * FROM Notes WHERE on_trash =0")
     fun getNotes(): LiveData<List<NoteData>>
 
     @Query("SELECT * FROM Notes WHERE on_trash=1")
