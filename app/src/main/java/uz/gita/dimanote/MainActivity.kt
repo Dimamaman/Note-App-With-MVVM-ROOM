@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
                 Log.i("TTT: ", "Denied")
             }
         }
+    private var isNight = false
 
     @SuppressLint("AppCompatMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
