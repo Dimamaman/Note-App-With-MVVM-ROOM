@@ -17,7 +17,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/title_edit"
-        app:boxBackgroundColor="@color/white"
+        android:textColorHint="@color/primary_500"
+        app:boxBackgroundColor="@color/noteItemBackground"
         app:boxCornerRadiusBottomEnd="14dp"
         app:boxCornerRadiusBottomStart="14dp"
         app:boxCornerRadiusTopEnd="14dp"
@@ -50,7 +51,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/content"
-        app:boxBackgroundColor="@color/white"
+        android:textColorHint="@color/primary_500"
+        app:boxBackgroundColor="@color/noteItemBackground"
         app:boxCornerRadiusBottomEnd="14dp"
         app:boxCornerRadiusBottomStart="14dp"
         app:boxCornerRadiusTopEnd="14dp"
@@ -79,8 +81,114 @@
         android:layout_margin="16dp"
         android:src="@drawable/baseline_check_24"
         app:tint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:visibility="gone"
+        android:layout_gravity="bottom"
+        app:backgroundTint="@color/colorAquaHaze"
+        app:contentInsetEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:contentInsetStart="8dp"
+        app:elevation="2dp"
+        tools:ignore="BottomAppBar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_bold"
+                style="@style/ActionButton"
+                app:layout_constraintEnd_toStartOf="@id/btn_italic"
+                app:icon="@drawable/ic_format_bold_black_24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_italic"
+                style="@style/ActionButton"
+                app:layout_constraintEnd_toStartOf="@id/btn_quote"
+                app:icon="@drawable/ic_format_italic_black_24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_bold"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_quote"
+                style="@style/ActionButton"
+                app:layout_constraintEnd_toStartOf="@id/btn_ordered_list"
+                app:icon="@drawable/ic_format_quote_black_24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_italic"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_ordered_list"
+                style="@style/ActionButton"
+                app:layout_constraintEnd_toStartOf="@id/btn_unordered_list"
+                app:icon="@drawable/ic_format_list_numbered_black_24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_quote"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_unordered_list"
+                style="@style/ActionButton"
+                app:layout_constraintEnd_toStartOf="@id/btn_underline_list"
+                app:icon="@drawable/ic_format_list_bulleted_black_24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_ordered_list"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_underline_list"
+                style="@style/ActionButton"
+                app:icon="@drawable/ic_underline"
+                app:layout_constraintEnd_toStartOf="@id/btn_left_list"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_unordered_list"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_left_list"
+                style="@style/ActionButton"
+                app:icon="@drawable/leftalign"
+                app:layout_constraintEnd_toStartOf="@id/btn_center_list"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_underline_list"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_center_list"
+                style="@style/ActionButton"
+                app:icon="@drawable/center_align"
+                app:layout_constraintEnd_toStartOf="@id/btn_right_list"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_left_list"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_right_list"
+                style="@style/ActionButton"
+                app:icon="@drawable/right_align"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_center_list"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

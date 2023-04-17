@@ -7,7 +7,7 @@ import uz.gita.dimanote.data.model.NoteData
 
 interface HomeViewModel {
     val notesLiveData: LiveData<List<NoteData>>
-    val openAddNoteScreenLiveData: LiveData<Unit>
+    val openAddNoteScreenLiveData: SharedFlow<Unit>
     val openEditNoteScreenLiveData: SharedFlow<NoteData>
     val searchNotesLiveData: LiveData<List<NoteData>>
 

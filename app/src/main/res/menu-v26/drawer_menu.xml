@@ -14,14 +14,14 @@
         <menu>
             <item
                 android:id="@+id/night_mode"
-                android:title="@string/night_mode"
+                android:title="@string/dark_mode"
                 android:icon="@drawable/night"
                 app:showAsAction="withText"
                 />
 
             <item
-                android:id="@+id/dark_mode"
-                android:title="@string/dark_mode"
+                android:id="@+id/light_mode"
+                android:title="@string/light_mode"
                 android:icon="@drawable/sun"
                 app:showAsAction="withText"
                 />

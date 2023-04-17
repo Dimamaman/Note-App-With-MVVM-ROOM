@@ -31,11 +31,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val binding by viewBinding(FragmentHomeBinding::bind)
     private val homeAdapter by lazy { HomeAdapter() }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.openAddNoteScreenLiveData.observe(this, openAddNoteObserver)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = binding.myApply {
 
         requireActivity().addMenuProvider(object : MenuProvider {
@@ -62,9 +57,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 val linearLayoutSearchView = magImage.parent as ViewGroup
                 linearLayoutSearchView.removeView(magImage)
 
-//                magImage.visibility = View.GONE
-//                magImage.setImageDrawable(null)
-
                 searchView.onActionViewExpanded()
                 searchView.queryHint = "Search..."
 
@@ -74,7 +66,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        Log.d("DDD","Search word -> $newText")
                         newText?.let { viewModel.searchNote(search = it) }
 
                         if (newText!!.isEmpty()) {
@@ -93,6 +84,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
         addNoteBtn.setOnClickListener {
+            Log.d("DDD","HomeFragment -> onViewCreate addNote Button Click")
             viewModel.openAddNoteScreen()
         }
 
@@ -133,6 +125,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             viewModel.openEditNoteScreenLiveData.collect {
                 val action = HomeFragmentDirections.actionHomeFragmentToEditFragment(it)
                 findNavController().navigate(action)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.openAddNoteScreenLiveData.collect {
+                findNavController().navigate(R.id.action_homeFragment_to_addNote)
             }
         }
 

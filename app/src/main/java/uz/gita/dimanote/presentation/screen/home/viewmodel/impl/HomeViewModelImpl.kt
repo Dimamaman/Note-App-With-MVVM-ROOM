@@ -24,13 +24,15 @@ class HomeViewModelImpl: ViewModel(), HomeViewModel {
 
     override var notesLiveData: LiveData<List<NoteData>> = repository.getNotes()
 
-    override val openAddNoteScreenLiveData = MutableLiveData<Unit>()
+    override val openAddNoteScreenLiveData = MutableSharedFlow<Unit>()
     override val openEditNoteScreenLiveData = MutableSharedFlow<NoteData>()
     override val searchNotesLiveData = MutableLiveData<List<NoteData>>()
 
 
     override fun openAddNoteScreen() {
-        openAddNoteScreenLiveData.value = Unit
+        viewModelScope.launch {
+            openAddNoteScreenLiveData.emit(Unit)
+        }
     }
 
     override fun showDialog(requireContext: Context, noteId: Long, title: String) {

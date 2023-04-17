@@ -48,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/add"
+                android:textColor="@color/add_btn_text_color"
                 android:backgroundTint="@color/primary_500"
                 android:textAllCaps="false"
                 app:cornerRadius="10dp"

@@ -2,32 +2,27 @@ package uz.gita.dimanote
 
 import android.annotation.SuppressLint
 import android.app.*
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
-import android.widget.DatePicker
-import android.widget.TimePicker
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.GravityCompat
 import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.*
 import uz.gita.dimanote.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
@@ -42,6 +37,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    @SuppressLint("AppCompatMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -68,6 +64,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                val colorDrawable = ColorDrawable(Color.parseColor("#888888"))
+                supportActionBar?.setBackgroundDrawable(colorDrawable)
+            }
+            Configuration.UI_MODE_NIGHT_NO -> {
+                val colorDrawable = ColorDrawable(Color.parseColor("#3461FD"))
+                supportActionBar?.setBackgroundDrawable(colorDrawable)
+            }
+        }
+
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -87,11 +94,26 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.trashScreen -> {
                     navController.navigate(R.id.action_homeFragment_to_trashFragment)
+                    Log.d("DDD","Activity -> onCreate navigate to trash")
+                }
+                R.id.night_mode -> {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    val colorDrawable = ColorDrawable(Color.parseColor("#888888"))
+                    supportActionBar?.setBackgroundDrawable(colorDrawable)
+                    Log.d("DDD","Activity -> onCreate")
+                    recreate()
+                }
+                R.id.light_mode -> {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    val colorDrawable = ColorDrawable(Color.parseColor("#3461FD"))
+                    supportActionBar?.setBackgroundDrawable(colorDrawable)
+                    recreate()
                 }
             }
-            binding.drawerLayout.closeDrawers()
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
+        Log.d("DDD","Activity -> onCreate")
     }
 
     override fun finish() {
