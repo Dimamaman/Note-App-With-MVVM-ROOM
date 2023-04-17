@@ -23,4 +23,6 @@ interface AppRepository {
     fun recoverNote(noteId: Long)
 
     fun deleteNotesFromTrash()
+
+    fun search(search: String): List<NoteData>
 }

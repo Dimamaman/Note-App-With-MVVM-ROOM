@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_navigation"
@@ -13,30 +12,32 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_addNote"
-            app:destination="@id/addNote" />
+            app:destination="@id/addNote"
 
-        <!--app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right"-->
-        <action
-            android:id="@+id/action_homeFragment_to_trashFragment"
-            app:destination="@id/trashFragment"/>
-
-            <!--app:enterAnim="@anim/slide_in_right"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"-->
+            app:popExitAnim="@anim/slide_out_right"
+
+            />
+        <action
+            android:id="@+id/action_homeFragment_to_trashFragment"
+            app:destination="@id/trashFragment"
+
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
         <action
             android:id="@+id/action_homeFragment_to_editFragment"
-            app:destination="@id/editFragment"/>
-            <!--app:enterAnim="@anim/slide_in_right"
+            app:destination="@id/editFragment"
+            app:enterAnim="@anim/slide_in_right"
 
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpToInclusive="false"-->
+            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
@@ -51,13 +52,13 @@
         android:id="@+id/trashFragment"
         android:name="uz.gita.dimanote.presentation.screen.trash.TrashFragment"
         android:label="Note in Trash"
-        tools:layout="@layout/fragment_trash"/>
+        tools:layout="@layout/fragment_trash" />
 
     <fragment
         android:id="@+id/editFragment"
         android:name="uz.gita.dimanote.presentation.screen.edit.EditFragment"
         android:label="Edit Note"
-        tools:layout="@layout/fragment_edit" >
+        tools:layout="@layout/fragment_edit">
         <argument
             android:name="note"
             app:argType="uz.gita.dimanote.data.model.NoteData" />

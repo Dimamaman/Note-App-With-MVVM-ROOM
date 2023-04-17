@@ -4,13 +4,14 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardUseCompatPadding="true"
+    android:background="@color/white"
     app:cardCornerRadius="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint"
         android:layout_width="match_parent"
         android:padding="10dp"
-        android:background="#F4EFEF"
+        android:background="@color/white"
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatTextView

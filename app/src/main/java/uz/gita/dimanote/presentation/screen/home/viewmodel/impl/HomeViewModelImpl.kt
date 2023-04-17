@@ -22,10 +22,12 @@ import uz.gita.dimanote.presentation.screen.home.viewmodel.HomeViewModel
 class HomeViewModelImpl: ViewModel(), HomeViewModel {
     private val repository: AppRepository = AppRepositoryImpl.getInstance()
 
-    override val notesLiveData: LiveData<List<NoteData>> = repository.getNotes()
+    override var notesLiveData: LiveData<List<NoteData>> = repository.getNotes()
 
     override val openAddNoteScreenLiveData = MutableLiveData<Unit>()
     override val openEditNoteScreenLiveData = MutableSharedFlow<NoteData>()
+    override val searchNotesLiveData = MutableLiveData<List<NoteData>>()
+
 
     override fun openAddNoteScreen() {
         openAddNoteScreenLiveData.value = Unit
@@ -33,7 +35,7 @@ class HomeViewModelImpl: ViewModel(), HomeViewModel {
 
     override fun showDialog(requireContext: Context, noteId: Long, title: String) {
         val dialog = Dialog(requireContext)
-        dialog.setCancelable(false)
+        dialog.setCancelable(true)
         dialog.setContentView(R.layout.dialog_custom)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
@@ -57,5 +59,13 @@ class HomeViewModelImpl: ViewModel(), HomeViewModel {
         viewModelScope.launch {
             openEditNoteScreenLiveData.emit(noteData)
         }
+    }
+
+    override fun searchNote(search: String){
+        searchNotesLiveData.value = repository.search(search)
+    }
+
+    override fun getAllNotes() {
+        notesLiveData = repository.getNotes()
     }
 }

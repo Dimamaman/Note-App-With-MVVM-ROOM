@@ -26,15 +26,15 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
-        etTitle.setText(args.note.title)
-        etContent.setText(args.note.content)
+        etTitle.editText?.setText(args.note.title)
+        etContent.editText?.setText(args.note.content)
 
         binding.editNoteBtn.setOnClickListener {
-            if (etTitle.text.toString().isEmpty() || etContent.text.toString().isEmpty()) {
+            if (etTitle.editText?.text.toString().isEmpty() || etContent.editText?.text.toString().isEmpty()) {
                 Toast.makeText(requireContext(), "Fieldlarni to'ldiring", Toast.LENGTH_SHORT).show()
             } else {
-                val title = binding.etTitle.text.toString().trim()
-                val content = binding.etContent.text.toString().trim()
+                val title = binding.etTitle.editText?.text.toString().trim()
+                val content = binding.etContent.editText?.text.toString().trim()
                 val time = DataConverter.getCurrentTime()
                 viewModel.updateNote(NoteData(id = args.note.id, title = title, content = content, createdAt = time))
                 Toast.makeText(requireContext(), "Successfully updated", Toast.LENGTH_SHORT).show()

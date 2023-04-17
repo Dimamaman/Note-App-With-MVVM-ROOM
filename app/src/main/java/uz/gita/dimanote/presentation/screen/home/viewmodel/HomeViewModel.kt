@@ -9,8 +9,12 @@ interface HomeViewModel {
     val notesLiveData: LiveData<List<NoteData>>
     val openAddNoteScreenLiveData: LiveData<Unit>
     val openEditNoteScreenLiveData: SharedFlow<NoteData>
+    val searchNotesLiveData: LiveData<List<NoteData>>
 
     fun openAddNoteScreen()
     fun showDialog(requireContext: Context, noteId: Long, title: String)
     fun openEditNote(noteData: NoteData)
+
+    fun searchNote(search: String)
+    fun getAllNotes()
 }

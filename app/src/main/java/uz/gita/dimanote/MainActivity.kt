@@ -81,6 +81,8 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        binding.navigationView.itemIconTintList = null
+
         binding.navigationView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.trashScreen -> {

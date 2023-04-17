@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/trashScreen"
+        android:title="@string/trash"
+        android:icon="@drawable/trash_bin"
+        app:showAsAction="withText" />
+
+    <item android:title="@string/settings">
+        <menu>
+            <item
+                android:id="@+id/night_mode"
+                android:title="@string/night_mode"
+                android:icon="@drawable/night"
+                app:showAsAction="withText"
+                />
+
+            <item
+                android:id="@+id/dark_mode"
+                android:title="@string/dark_mode"
+                android:icon="@drawable/sun"
+                app:showAsAction="withText"
+                />
+        </menu>
+
+    </item>
+
+    <!--<group android:checkableBehavior="single">
+        <item
+            android:id="@+id/night_mode"
+            android:title="@string/night_mode"
+            android:icon="@drawable/night"
+            app:showAsAction="withText"
+            />
+
+        <item
+            android:id="@+id/dark_mode"
+            android:title="@string/dark_mode"
+            android:icon="@drawable/sun"
+            app:showAsAction="withText"
+            />
+    </group>-->
+
+</menu>

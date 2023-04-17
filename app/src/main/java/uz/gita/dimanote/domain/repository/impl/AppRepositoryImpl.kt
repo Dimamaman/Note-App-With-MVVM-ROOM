@@ -81,4 +81,9 @@ class AppRepositoryImpl private constructor() : AppRepository {
     override fun deleteNotesFromTrash() {
         noteDao.deleteNotesFromTrash()
     }
+
+    override fun search(search: String): List<NoteData> {
+        return noteDao.search(search)
+    }
+
 }

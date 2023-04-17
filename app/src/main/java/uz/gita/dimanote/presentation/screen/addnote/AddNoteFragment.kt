@@ -1,17 +1,13 @@
 package uz.gita.dimanote.presentation.screen.addnote
 
-import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
-import android.content.Context.ALARM_SERVICE
-import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -28,16 +24,13 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import uz.gita.dimanote.R
-import uz.gita.dimanote.app.App
 import uz.gita.dimanote.data.model.NoteData
 import uz.gita.dimanote.data.source.local.*
 import uz.gita.dimanote.data.source.local.converter.DataConverter
 import uz.gita.dimanote.databinding.FragmentAddBinding
 import uz.gita.dimanote.presentation.screen.addnote.viewmodel.AddViewModel
-import uz.gita.dimanote.presentation.screen.addnote.viewmodel.AddViewModelImpl
+import uz.gita.dimanote.presentation.screen.addnote.viewmodel.impl.AddViewModelImpl
 import uz.gita.dimanote.util.myApply
 import java.util.*
 
@@ -72,7 +65,7 @@ class AddNoteFragment : Fragment(R.layout.fragment_add) {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_edit -> {
-                        if (binding.etTitle.text.toString().isEmpty()) {
+                        if (binding.etTitle.editText?.text.toString().isEmpty()) {
                             Toast.makeText(
                                 requireContext(),
                                 "Title must not be empty",
@@ -94,20 +87,20 @@ class AddNoteFragment : Fragment(R.layout.fragment_add) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveNote(): Boolean {
-        val title = binding.etTitle.text.toString().trim()
-        val content = binding.etContent.text.toString().trim()
+        val title = binding.etTitle.editText?.text.toString().trim()
+        val content = binding.etContent.editText?.text.toString().trim()
         val time = DataConverter.getCurrentTime()
 
         if (title.isEmpty()) {
             binding.etTitle.error = "Title must not be empty"
-            binding.etTitle.setTextColor(Color.RED)
+            binding.etTitle.editText?.setTextColor(Color.RED)
             binding.etTitle.requestFocus()
             return true
         }
 
         if (content.isEmpty()) {
             binding.etContent.error = "Title must not be empty"
-            binding.etContent.setTextColor(Color.RED)
+            binding.etContent.editText?.setTextColor(Color.RED)
             binding.etContent.requestFocus()
             return true
         }
@@ -121,7 +114,7 @@ class AddNoteFragment : Fragment(R.layout.fragment_add) {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun showReminderDialog() {
         dialog = Dialog(requireContext())
-        dialog.setCancelable(false)
+        dialog.setCancelable(true)
         dialog.setContentView(R.layout.notify_item)
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -138,8 +131,8 @@ class AddNoteFragment : Fragment(R.layout.fragment_add) {
 
     private fun scheduleNotification() {
         val intent = Intent(requireContext().applicationContext, Notification1::class.java)
-        val title = binding.etTitle.text.toString()
-        val message = binding.etContent.text.toString()
+        val title = binding.etTitle.editText?.text.toString()
+        val message = binding.etContent.editText?.text.toString()
         intent.putExtra(titleExtra, title)
         intent.putExtra(messageExtra, message)
 

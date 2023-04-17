@@ -1,5 +1,6 @@
 package uz.gita.dimanote.data.source.local.dao
 
+import android.provider.ContactsContract.CommonDataKinds.Note
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import uz.gita.dimanote.data.model.NoteData
@@ -37,4 +38,7 @@ interface NoteDao {
 
     @Query("DELETE FROM Notes WHERE on_trash=1")
     fun deleteNotesFromTrash()
+
+    @Query("SELECT * FROM Notes WHERE title LIKE '%' || :search || '%' AND on_trash=0")
+    fun search(search: String): List<NoteData>
 }
