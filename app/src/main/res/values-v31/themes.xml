@@ -28,4 +28,16 @@
             <!-- Required -->
             <item name="postSplashScreenTheme">@style/Theme.MyNote</item>
         </style>
+
+    <style name="BottomSheetTheme" parent="BottomSheetDialog"/>
+
+    <style name="BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+
+    <style name="BottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet</item>
+        <item name="behavior_peekHeight">300dp</item>
+    </style>
 </resources>

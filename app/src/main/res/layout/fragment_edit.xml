@@ -15,7 +15,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/title_edit"
-        android:textColorHint="@color/primary_500"
+        android:textColorHint="@color/noteItemTextColor"
         app:boxBackgroundColor="@color/noteItemBackground"
         app:boxCornerRadiusBottomEnd="14dp"
         app:boxCornerRadiusBottomStart="14dp"
@@ -24,7 +24,8 @@
         app:boxStrokeColor="@color/primary_500"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="1dp"
-        app:hintTextColor="@color/primary_500"
+        app:endIconMode="clear_text"
+        app:hintTextColor="@color/noteItemTextColor"
         app:layout_constraintBottom_toTopOf="@+id/etContent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -33,7 +34,7 @@
             android:layout_height="wrap_content"
             android:imeOptions="actionNext"
             android:inputType="text|textMultiLine"
-            android:textColor="@color/gray_900" />
+            android:textColor="@color/noteItemTextColor" />
 
         <!--<org.wordpress.aztec.AztecText
             android:id="@+id/et_editor"
@@ -84,12 +85,16 @@
         app:hintTextColor="@color/primary_500"
         app:layout_constraintTop_toBottomOf="@+id/etTitle">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <jp.wasabeef.richeditor.RichEditor
+            android:id="@+id/rich_editor"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionNext"
+            android:layout_height="600dp"
+            android:imeOptions="actionDone"
             android:inputType="text|textMultiLine"
-            android:textColor="@color/gray_900" />
+            android:maxLines="10"
+            android:paddingVertical="10dp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/noteItemTextColor" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -100,11 +105,268 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/reminder"
         android:src="@drawable/baseline_check_24"
-        app:tint="@color/white"
-        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:tint="@color/plus_button"
+        app:backgroundTint="@color/window_background"
+        app:layout_constraintBottom_toTopOf="@id/rv_rich"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.material.bottomappbar.BottomAppBar
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_rich"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:overScrollMode="never"
+        android:layout_height="48dp"
+        tools:itemCount="20"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/item_rich" />
+
+    <!--<HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/action_bold"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_bold" />
+
+            <ImageButton
+                android:id="@+id/action_italic"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_italic" />
+
+            <ImageButton
+                android:id="@+id/action_subscript"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_subscript" />
+
+            <ImageButton
+                android:id="@+id/action_superscript"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_superscript" />
+
+            <ImageButton
+                android:id="@+id/action_strikethrough"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_strikethrough" />
+
+            <ImageButton
+                android:id="@+id/action_underline"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_underline" />
+
+            <ImageButton
+                android:id="@+id/action_heading1"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/h1" />
+
+            <ImageButton
+                android:id="@+id/action_heading2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/h2" />
+
+            <ImageButton
+                android:id="@+id/action_heading3"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/h3" />
+
+            <ImageButton
+                android:id="@+id/action_heading4"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/h4" />
+
+            <ImageButton
+                android:id="@+id/action_heading5"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/h5" />
+
+            <ImageButton
+                android:id="@+id/action_heading6"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/h6" />
+
+            <ImageButton
+                android:id="@+id/action_txt_color"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_text_color" />
+
+            <ImageButton
+                android:id="@+id/action_bg_color"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_bg_color" />
+
+
+            <ImageButton
+                android:id="@+id/action_indent"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_indent" />
+
+            <ImageButton
+                android:id="@+id/action_outdent"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_outdent" />
+
+            <ImageButton
+                android:id="@+id/action_align_left"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_justify_left" />
+
+            <ImageButton
+                android:id="@+id/action_align_center"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_justify_center" />
+
+            <ImageButton
+                android:id="@+id/action_align_right"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_justify_right" />
+
+            <ImageButton
+                android:id="@+id/action_insert_bullets"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_bullets" />
+
+            <ImageButton
+                android:id="@+id/action_insert_numbers"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_numbers" />
+
+            <ImageButton
+                android:id="@+id/action_blockquote"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_block_quote" />
+
+            <ImageButton
+                android:id="@+id/action_insert_image"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_insert_image" />
+
+
+            <ImageButton
+                android:id="@+id/action_insert_link"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_link" />
+
+            <ImageButton
+                android:id="@+id/action_insert_checkbox"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:contentDescription="@null"
+                android:src="@android:drawable/checkbox_on_background" />
+
+        </LinearLayout>
+
+    </HorizontalScrollView>-->
+
+    <!--<com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -208,6 +470,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
+    </com.google.android.material.bottomappbar.BottomAppBar>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

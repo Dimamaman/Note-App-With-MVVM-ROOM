@@ -33,7 +33,17 @@ class TrashFragment : Fragment(R.layout.fragment_trash) {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.clear_notes -> {
-                        viewModel.deleteNotesFromTrash()
+                        viewModel.notesInTrash.observe(viewLifecycleOwner) {
+                            if (it.isEmpty()) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Trash is empty",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                viewModel.showDeleteDialogNotesInTrash(requireContext())
+                            }
+                        }
                         true
                     }
                     else -> {

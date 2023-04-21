@@ -10,6 +10,12 @@
         android:icon="@drawable/trash_bin"
         app:showAsAction="withText" />
 
+    <item
+        android:id="@+id/infoDialog"
+        android:title="@string/info"
+        android:icon="@drawable/baseline_info_24"
+        app:showAsAction="withText" />
+
     <item android:title="@string/settings">
         <menu>
             <item

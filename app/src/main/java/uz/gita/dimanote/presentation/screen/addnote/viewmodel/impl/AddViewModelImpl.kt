@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import uz.gita.dimanote.data.model.NoteData
 import uz.gita.dimanote.domain.repository.AppRepository
 import uz.gita.dimanote.domain.repository.impl.AppRepositoryImpl
+import uz.gita.dimanote.presentation.adapter.data.RichFeatureModel
 import uz.gita.dimanote.presentation.screen.addnote.viewmodel.AddViewModel
 
 class AddViewModelImpl: ViewModel(), AddViewModel {
+
     private val repository: AppRepository = AppRepositoryImpl.getInstance()
 
     override val closeAddNoteScreen = MutableLiveData<Unit>()
@@ -19,4 +21,7 @@ class AddViewModelImpl: ViewModel(), AddViewModel {
     override fun closeAddNote() {
         closeAddNoteScreen.value = Unit
     }
+
+    override fun getRichFeatures(): List<RichFeatureModel> = repository.getRichFeaturesData()
+
 }

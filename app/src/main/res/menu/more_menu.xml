@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_undo"
+        android:icon="@drawable/ic_undo"
+        android:title="Undo"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_pin"
+        android:enabled="true"
+        android:icon="@drawable/pin"
+        app:showAsAction="always"
+        android:title="@string/reminder" />
     <item
         android:id="@+id/action_edit"
         android:enabled="true"
-        android:title="@string/reminder" />
+        android:icon="@drawable/notification_bell"
+        android:title="@string/reminder"
+        app:showAsAction="always"/>
+
 
 </menu>

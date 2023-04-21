@@ -55,4 +55,28 @@ class TrashViewModelImpl: ViewModel(), TrashViewModel {
     override fun deleteNotesFromTrash() {
         repository.deleteNotesFromTrash()
     }
+
+    override fun showDeleteDialogNotesInTrash(context: Context) {
+        val dialog = Dialog(context)
+
+        dialog.setContentView(R.layout.dialog_custom_delete_trash)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val noBtn: MaterialButton = dialog.findViewById(R.id.no_btn)
+
+        val deleteBtn: MaterialButton = dialog.findViewById(R.id.delete_all_notes_btn)
+
+
+        noBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        deleteBtn.setOnClickListener {
+            repository.deleteNotesFromTrash()
+            dialog.dismiss()
+        }
+
+        dialog.create()
+        dialog.show()
+    }
 }

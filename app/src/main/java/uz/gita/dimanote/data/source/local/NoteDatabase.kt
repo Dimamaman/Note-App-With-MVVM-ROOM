@@ -8,7 +8,7 @@ import uz.gita.dimanote.data.source.local.converter.DataConverter
 import uz.gita.dimanote.data.source.local.dao.NoteDao
 import uz.gita.dimanote.data.source.local.entity.NoteEntity
 
-@Database(entities = [NoteEntity::class], exportSchema = true, version = 2)
+@Database(entities = [NoteEntity::class], exportSchema = true, version = 3)
 @TypeConverters(DataConverter::class)
 abstract class NoteDatabase : RoomDatabase() {
 
@@ -17,7 +17,7 @@ abstract class NoteDatabase : RoomDatabase() {
     companion object {
         private lateinit var instance: NoteDatabase
 
-        private const val DATABASE_NAE = "Note.db"
+        private const val DATABASE_NAE = "Notee.db"
 
         fun init(context: Context) {
             if (!(::instance.isInitialized)) {

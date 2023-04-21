@@ -70,4 +70,17 @@ class HomeViewModelImpl: ViewModel(), HomeViewModel {
     override fun getAllNotes() {
         notesLiveData = repository.getNotes()
     }
+
+    override fun updateNote(noteData: NoteData) {
+        repository.updateNote(noteData)
+        getAllNotes()
+    }
+
+    override fun pinNote(noteId: Long) {
+        repository.pinNote(noteId)
+    }
+
+    override fun unPinNote(noteId: Long) {
+        repository.unPinNote(noteId)
+    }
 }

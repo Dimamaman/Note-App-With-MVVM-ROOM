@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@color/window_background"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:fitsSystemWindows="true">
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -17,7 +17,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/title_edit"
-        android:textColorHint="@color/primary_500"
+        android:textColorHint="@color/noteItemTextColor"
         app:boxBackgroundColor="@color/noteItemBackground"
         app:boxCornerRadiusBottomEnd="14dp"
         app:boxCornerRadiusBottomStart="14dp"
@@ -26,20 +26,21 @@
         app:boxStrokeColor="@color/primary_500"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="1dp"
-        app:hintTextColor="@color/primary_500"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:endIconMode="clear_text"
+        app:hintTextColor="@color/noteItemTextColor"
         app:layout_constraintBottom_toTopOf="@+id/etContent"
-        app:layout_constraintTop_toBottomOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:imeOptions="actionNext"
-        android:inputType="text|textMultiLine"
-        android:textColor="@color/gray_900"
-        tools:ignore="MissingConstraints" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:inputType="text|textMultiLine"
+            android:textColor="@color/noteItemTextColor"
+            tools:ignore="MissingConstraints" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -63,12 +64,15 @@
         app:hintTextColor="@color/primary_500"
         app:layout_constraintTop_toBottomOf="@+id/etTitle">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <jp.wasabeef.richeditor.RichEditor
+            android:id="@+id/rich_editor"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="128dp"
+            android:background="@android:color/transparent"
             android:imeOptions="actionDone"
             android:inputType="text|textMultiLine"
             android:maxLines="10"
+            android:paddingVertical="10dp"
             android:textColor="@color/gray_900" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,119 +80,271 @@
         android:id="@+id/addNoteBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:borderWidth="0dp"
-        android:contentDescription="@string/reminder"
         android:layout_margin="16dp"
+        android:contentDescription="@string/reminder"
         android:src="@drawable/baseline_check_24"
-        app:tint="@color/white"
-        app:layout_constraintBottom_toTopOf="@id/bottomBar"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:visibility="gone"
-        android:layout_gravity="bottom"
-        app:backgroundTint="@color/colorAquaHaze"
-        app:contentInsetEnd="8dp"
+        app:backgroundTint="@color/window_background"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toTopOf="@id/rv_rich"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/plus_button" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_rich"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:overScrollMode="never"
+        android:layout_height="48dp"
+        tools:itemCount="20"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:contentInsetStart="8dp"
-        app:elevation="2dp"
-        tools:ignore="BottomAppBar">
+        tools:listitem="@layout/item_rich" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <!--    <HorizontalScrollView-->
+    <!--        android:id="@+id/horizontalScrollView"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="48dp"-->
+    <!--        android:scrollbars="none"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent">-->
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_bold"
-                style="@style/ActionButton"
-                app:layout_constraintEnd_toStartOf="@id/btn_italic"
-                app:icon="@drawable/ic_format_bold_black_24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <!--        <LinearLayout-->
+    <!--            android:id="@+id/linear"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content">-->
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_italic"
-                style="@style/ActionButton"
-                app:layout_constraintEnd_toStartOf="@id/btn_quote"
-                app:icon="@drawable/ic_format_italic_black_24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_bold"
-                app:layout_constraintTop_toTopOf="parent" />
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_bold"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_bold" />-->
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_quote"
-                style="@style/ActionButton"
-                app:layout_constraintEnd_toStartOf="@id/btn_ordered_list"
-                app:icon="@drawable/ic_format_quote_black_24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_italic"
-                app:layout_constraintTop_toTopOf="parent" />
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_italic"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_italic" />-->
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_ordered_list"
-                style="@style/ActionButton"
-                app:layout_constraintEnd_toStartOf="@id/btn_unordered_list"
-                app:icon="@drawable/ic_format_list_numbered_black_24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_quote"
-                app:layout_constraintTop_toTopOf="parent" />
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_subscript"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_subscript" />-->
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_unordered_list"
-                style="@style/ActionButton"
-                app:layout_constraintEnd_toStartOf="@id/btn_underline_list"
-                app:icon="@drawable/ic_format_list_bulleted_black_24dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_ordered_list"
-                app:layout_constraintTop_toTopOf="parent" />
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_superscript"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_superscript" />-->
+
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_strikethrough"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_strikethrough" />-->
+
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_underline"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_underline" />-->
+
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_heading1"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/h1" />-->
+
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_heading2"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/h2" />-->
+
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_heading3"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/h3" />-->
+
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_heading4"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/h4" />-->
+
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_heading5"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/h5" />-->
+
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_heading6"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/h6" />-->
+
+    <!--            &lt;!&ndash;<ImageButton-->
+    <!--                android:id="@+id/action_txt_color"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="?android:selectableItemBackground"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_text_color" />-->
+
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_bg_color"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="?android:selectableItemBackground"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_bg_color" />&ndash;&gt;-->
 
 
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_indent"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_indent" />-->
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_underline_list"
-                style="@style/ActionButton"
-                app:icon="@drawable/ic_underline"
-                app:layout_constraintEnd_toStartOf="@id/btn_left_list"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_unordered_list"
-                app:layout_constraintTop_toTopOf="parent" />
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_outdent"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_outdent" />-->
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_left_list"
-                style="@style/ActionButton"
-                app:icon="@drawable/leftalign"
-                app:layout_constraintEnd_toStartOf="@id/btn_center_list"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_underline_list"
-                app:layout_constraintTop_toTopOf="parent" />
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_align_left"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_justify_left" />-->
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_center_list"
-                style="@style/ActionButton"
-                app:icon="@drawable/center_align"
-                app:layout_constraintEnd_toStartOf="@id/btn_right_list"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_left_list"
-                app:layout_constraintTop_toTopOf="parent" />
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_align_center"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_justify_center" />-->
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_right_list"
-                style="@style/ActionButton"
-                app:icon="@drawable/right_align"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_center_list"
-                app:layout_constraintTop_toTopOf="parent" />
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_align_right"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_justify_right" />-->
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_insert_bullets"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_bullets" />-->
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_insert_numbers"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_numbers" />-->
+
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_blockquote"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@color/white"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_block_quote" />-->
+
+    <!--            &lt;!&ndash;<ImageButton-->
+    <!--                android:id="@+id/action_insert_image"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="?android:selectableItemBackground"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_insert_image" />-->
+
+
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_insert_link"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@null"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@drawable/ic_link" />-->
+
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/action_insert_checkbox"-->
+    <!--                android:layout_width="48dp"-->
+    <!--                android:layout_height="48dp"-->
+    <!--                android:background="@null"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:contentDescription="@null"-->
+    <!--                android:src="@android:drawable/checkbox_on_background" />-->
+    <!--&ndash;&gt;-->
+    <!--        </LinearLayout>-->
+
+    <!--    </HorizontalScrollView>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

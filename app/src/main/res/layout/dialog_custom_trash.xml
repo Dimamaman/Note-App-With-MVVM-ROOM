@@ -78,8 +78,5 @@
             </LinearLayout>
 
         </LinearLayout>
-
-
-
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

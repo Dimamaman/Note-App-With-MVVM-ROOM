@@ -9,7 +9,7 @@
         <item name="colorSecondaryVariant">@color/gray_700</item>
         <item name="colorOnSecondary">#757575</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">#888888</item>
+        <item name="android:statusBarColor">@color/statusBarColor</item>
         <!-- Customize your theme here. -->
     </style>
 
@@ -27,5 +27,17 @@
         <!-- Set the theme of the Activity that directly follows your splash screen. -->
         <!-- Required -->
         <item name="postSplashScreenTheme">@style/Theme.MyNote</item>
+    </style>
+
+    <style name="BottomSheetTheme" parent="BottomSheetDialog"/>
+
+    <style name="BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+
+    <style name="BottomSheet" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet</item>
+        <item name="behavior_peekHeight">300dp</item>
     </style>
 </resources>

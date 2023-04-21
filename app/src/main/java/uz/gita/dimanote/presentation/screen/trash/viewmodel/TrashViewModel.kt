@@ -10,4 +10,5 @@ interface TrashViewModel {
     fun recover(noteId: Long)
     fun showDialog(context: Context, noteId: Long,title: String)
     fun deleteNotesFromTrash()
+    fun showDeleteDialogNotesInTrash(context: Context)
 }

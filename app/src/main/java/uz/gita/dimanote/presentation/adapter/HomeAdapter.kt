@@ -1,7 +1,9 @@
 package uz.gita.dimanote.presentation.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.parseAsHtml
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -32,8 +34,14 @@ class HomeAdapter : ListAdapter<NoteData, HomeAdapter.HomeViewHolder>(DIFF_CALL_
         fun bind(noteData: NoteData) {
             binding.apply {
                 textNoteTitle.text = noteData.title
-                textNoteContent.text = noteData.content
+                textNoteContent.text = noteData.content.parseAsHtml()
                 textNoteDate.text = noteData.createdAt.toString()
+
+                if (noteData.isPin == 1) {
+                    imagePin.visibility = View.VISIBLE
+                } else {
+                    imagePin.visibility = View.GONE
+                }
             }
 
             binding.constraint.setOnClickListener {
@@ -43,13 +51,8 @@ class HomeAdapter : ListAdapter<NoteData, HomeAdapter.HomeViewHolder>(DIFF_CALL_
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
-        return HomeViewHolder(
-            ItemLayoutBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+        val binding = ItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return HomeViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {

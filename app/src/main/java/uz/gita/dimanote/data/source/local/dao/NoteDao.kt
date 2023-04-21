@@ -41,4 +41,10 @@ interface NoteDao {
 
     @Query("SELECT * FROM Notes WHERE title LIKE '%' || :search || '%' AND on_trash=0")
     fun search(search: String): List<NoteData>
+
+    @Query("UPDATE Notes set isPin=1 WHERE id = :noteID")
+    fun pinNote(noteID: Long)
+
+    @Query("UPDATE Notes set isPin=0 WHERE id = :noteID")
+    fun unPinNote(noteID: Long)
 }

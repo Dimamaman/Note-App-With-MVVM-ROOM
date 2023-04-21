@@ -7,11 +7,13 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -21,6 +23,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
+import com.google.android.material.button.MaterialButton
 import uz.gita.dimanote.data.source.local.sharedPref.MySharedPreference
 import uz.gita.dimanote.databinding.ActivityMainBinding
 
@@ -72,13 +75,13 @@ class MainActivity : AppCompatActivity() {
             supportActionBar?.setBackgroundDrawable(colorDrawable)
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            val colorDrawable = ColorDrawable(Color.parseColor("#888888"))
+            val colorDrawable = ColorDrawable(Color.parseColor("#2B2B2B"))
             supportActionBar?.setBackgroundDrawable(colorDrawable)
         }
 
         /*when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_YES -> {
-                val colorDrawable = ColorDrawable(Color.parseColor("#888888"))
+                val colorDrawable = ColorDrawable(Color.parseColor("#2B2B2B"))
                 supportActionBar?.setBackgroundDrawable(colorDrawable)
             }
             Configuration.UI_MODE_NIGHT_NO -> {
@@ -106,11 +109,10 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.trashScreen -> {
                     navController.navigate(R.id.action_homeFragment_to_trashFragment)
-                    Log.d("DDD","Activity -> onCreate navigate to trash")
                 }
                 R.id.night_mode -> {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    val colorDrawable = ColorDrawable(Color.parseColor("#888888"))
+                    val colorDrawable = ColorDrawable(Color.parseColor("#2B2B2B"))
                     supportActionBar?.setBackgroundDrawable(colorDrawable)
                     sharedPreference.isNight = false
                     recreate()
@@ -122,11 +124,28 @@ class MainActivity : AppCompatActivity() {
                     sharedPreference.isNight = true
                     recreate()
                 }
+                R.id.infoDialog -> {
+                    val dialog = Dialog(this)
+                    dialog.setCancelable(true)
+                    dialog.setContentView(R.layout.dialog_info)
+                    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                    val yesBtn: MaterialButton = dialog.findViewById(R.id.ok_btn)
+                    val textInfo: AppCompatTextView = dialog.findViewById(R.id.text_info)
+//                    textInfo.setTextColor(ContextCompat.getColor(this,R.color.noteItemTextColor))
+                    textInfo.movementMethod = LinkMovementMethod.getInstance()
+
+                    yesBtn.setOnClickListener {
+                        dialog.dismiss()
+                    }
+
+                    dialog.create()
+                    dialog.show()
+                }
             }
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
-        Log.d("DDD","Activity -> onCreate")
     }
 
     override fun finish() {

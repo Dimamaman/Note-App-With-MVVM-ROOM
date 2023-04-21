@@ -17,4 +17,10 @@ interface HomeViewModel {
 
     fun searchNote(search: String)
     fun getAllNotes()
+
+    fun updateNote(noteData: NoteData)
+
+    fun pinNote(noteId: Long)
+
+    fun unPinNote(noteId: Long)
 }

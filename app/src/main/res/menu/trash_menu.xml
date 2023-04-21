@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/clear_notes"
-        android:icon="@drawable/trash_bin"
+        android:icon="@drawable/baseline_delete_24"
         android:title="Clear all notes"
         app:showAsAction="ifRoom" />
 

@@ -3,7 +3,6 @@ package uz.gita.dimanote.presentation.screen.home
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.SearchView
@@ -14,13 +13,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.launch
 import uz.gita.dimanote.R
+import uz.gita.dimanote.data.model.NoteData
 import uz.gita.dimanote.databinding.FragmentHomeBinding
 import uz.gita.dimanote.presentation.adapter.HomeAdapter
+import uz.gita.dimanote.presentation.dialog.MyBottomSheetDialog
 import uz.gita.dimanote.presentation.screen.home.viewmodel.HomeViewModel
 import uz.gita.dimanote.presentation.screen.home.viewmodel.impl.HomeViewModelImpl
 import uz.gita.dimanote.util.myApply
@@ -32,7 +34,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val homeAdapter by lazy { HomeAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = binding.myApply {
-
         requireActivity().addMenuProvider(object : MenuProvider {
             @SuppressLint("DiscouragedApi")
             @RequiresApi(Build.VERSION_CODES.O)
@@ -51,7 +52,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 searchPlate.setBackgroundResource(0)
                 searchView.isIconifiedByDefault = false
 
-                val magId = searchView.resources.getIdentifier("android:id/search_mag_icon", null, null)
+                val magId =
+                    searchView.resources.getIdentifier("android:id/search_mag_icon", null, null)
                 val magImage: ImageView = searchView.findViewById<View>(magId) as ImageView
 
                 val linearLayoutSearchView = magImage.parent as ViewGroup
@@ -82,31 +84,45 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         }, viewLifecycleOwner)
 
-
         addNoteBtn.setOnClickListener {
-            Log.d("DDD","HomeFragment -> onViewCreate addNote Button Click")
             viewModel.openAddNoteScreen()
         }
 
+        viewModel.notesLiveData.observe(viewLifecycleOwner, observerList)
+
         homeAdapter.setLongClickListener {
-            viewModel.showDialog(requireContext(), it.id, it.title)
+            val currentNote = it
+            val bottomSheetDialog = MyBottomSheetDialog()
+
+            if (currentNote.isPin == 1) {
+                bottomSheetDialog.isPin(1)
+            } else {
+                bottomSheetDialog.isPin(0)
+            }
+
+            bottomSheetDialog.setClickPinButtonListener {
+                if (currentNote.isPin == 0) {
+//                    currentNote.isPin = 1
+//                    viewModel.updateNote(currentNote)
+                    viewModel.pinNote(it.id)
+                } else {
+//                    currentNote.isPin = 0
+//                    viewModel.updateNote(currentNote)
+                    viewModel.unPinNote(currentNote.id)
+                }
+                bottomSheetDialog.dismiss()
+            }
+
+            bottomSheetDialog.setClickDeleteButtonListener {
+                viewModel.showDialog(requireContext(), currentNote.id, currentNote.title)
+                bottomSheetDialog.dismiss()
+            }
+
+            bottomSheetDialog.show(parentFragmentManager, "BottomSheetDialog")
         }
 
         homeAdapter.setEditClickListener { note ->
             viewModel.openEditNote(note)
-        }
-
-        viewModel.notesLiveData.observe(viewLifecycleOwner) {
-            Log.d("DDD","NOtes isEmpty -> ${it.isEmpty()}")
-            if (it.isEmpty()) {
-                binding.imageEmptyBox.visibility = View.VISIBLE
-                homeAdapter.submitList(it)
-                recyclerViewHome.adapter = homeAdapter
-            } else {
-                binding.imageEmptyBox.visibility = View.GONE
-                homeAdapter.submitList(it)
-                recyclerViewHome.adapter = homeAdapter
-            }
         }
 
         viewModel.searchNotesLiveData.observe(viewLifecycleOwner) {
@@ -117,9 +133,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
             homeAdapter.submitList(it)
         }
-
-        binding.recyclerViewHome.layoutManager =
-            StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.openEditNoteScreenLiveData.collect {
@@ -134,13 +147,30 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         }
 
-//        viewModel.openEditNoteScreenLiveData.observe(this@HomeFragment) {
-//            val action = HomeFragmentDirections.actionHomeFragmentToEditFragment(it)
-//            findNavController().navigate(action)
-//        }
+        binding.swiper.setOnRefreshListener {
+            viewModel.getAllNotes()
+            binding.swiper.isRefreshing = false
+        }
     }
 
     private val openAddNoteObserver = Observer<Unit> {
         findNavController().navigate(R.id.action_homeFragment_to_addNote)
+    }
+
+    private val observerList = Observer<List<NoteData>> {
+        if (it.isEmpty()) {
+            binding.imageEmptyBox.visibility = View.VISIBLE
+        } else {
+            binding.imageEmptyBox.visibility = View.GONE
+            homeAdapter.submitList(it)
+            binding.recyclerViewHome.adapter = homeAdapter
+        }
+        val layoutManager = StaggeredGridLayoutManager(2, OrientationHelper.VERTICAL)
+        layoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+        binding.recyclerViewHome.layoutManager = layoutManager
+        binding.recyclerViewHome.itemAnimator = DefaultItemAnimator()
+
+        homeAdapter.submitList(it)
+        binding.recyclerViewHome.adapter = homeAdapter
     }
 }

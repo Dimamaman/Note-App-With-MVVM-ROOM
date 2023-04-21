@@ -1,5 +1,6 @@
 package uz.gita.dimanote.presentation.screen.addnote
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -13,11 +14,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.DatePicker
+import android.widget.LinearLayout
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -29,6 +33,8 @@ import uz.gita.dimanote.data.model.NoteData
 import uz.gita.dimanote.data.source.local.*
 import uz.gita.dimanote.data.source.local.converter.DataConverter
 import uz.gita.dimanote.databinding.FragmentAddBinding
+import uz.gita.dimanote.presentation.adapter.data.RichFeatureType.*
+import uz.gita.dimanote.presentation.adapter.RichFeatureAdapter
 import uz.gita.dimanote.presentation.screen.addnote.viewmodel.AddViewModel
 import uz.gita.dimanote.presentation.screen.addnote.viewmodel.impl.AddViewModelImpl
 import uz.gita.dimanote.util.myApply
@@ -39,16 +45,22 @@ class AddNoteFragment : Fragment(R.layout.fragment_add) {
     private val viewModel: AddViewModel by viewModels<AddViewModelImpl>()
     private val binding by viewBinding(FragmentAddBinding::bind)
     private lateinit var dialog: Dialog
+    private var isPin = true
+    private var isSelected = true
+    private lateinit var parentLinearLayout: LinearLayout
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.closeAddNoteScreen.observe(this,closeAddNoteObserver)
+        viewModel.closeAddNoteScreen.observe(this, closeAddNoteObserver)
     }
 
+    @SuppressLint("ResourceAsColor")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = binding.myApply {
         createNotificationChannel()
+        init()
+        setListener()
         addNoteBtn.setOnClickListener {
             if (saveNote()) {
                 return@setOnClickListener
@@ -76,38 +88,109 @@ class AddNoteFragment : Fragment(R.layout.fragment_add) {
                         }
                         true
                     }
+
+                    R.id.action_pin -> {
+                        isPin = if (isPin) {
+                            Toast.makeText(requireContext(), "Note Pinned", Toast.LENGTH_SHORT)
+                                .show()
+                            false
+                        } else {
+                            Toast.makeText(requireContext(), "Note UnPinned", Toast.LENGTH_SHORT)
+                                .show()
+                            true
+                        }
+                        true
+                    }
+
                     else -> {
                         false
                     }
                 }
             }
-
         }, viewLifecycleOwner)
+
+        richEditor.setBullets()
+
+        richEditor.setPadding(20, 10, 20, 10)
+        richEditor.setPlaceholder("Insert content here...")
+
+        context?.let { ContextCompat.getColor(it, R.color.window_background) }
+            ?.let { richEditor.setEditorBackgroundColor(it) }
+
+        context?.let { ContextCompat.getColor(it, R.color.noteItemTextColor) }
+            ?.let { richEditor.setEditorFontColor(it) }
+    }
+
+    private fun setListener() {
+        adapter?.setSelectListener { type ->
+            when (type) {
+                BOLD -> binding.richEditor.setBold()
+                ITALIC -> binding.richEditor.setItalic()
+                SUBSCRIPT -> binding.richEditor.setSubscript()
+                SUPERSCRIPT -> binding.richEditor.setSuperscript()
+                STRIKETHROUGH -> binding.richEditor.setStrikeThrough()
+                UNDERLINE -> binding.richEditor.setUnderline()
+                H1 -> binding.richEditor.setHeading(1)
+                H2 -> binding.richEditor.setHeading(2)
+                H3 -> binding.richEditor.setHeading(3)
+                H4 -> binding.richEditor.setHeading(4)
+                H5 -> binding.richEditor.setHeading(5)
+                H6 -> binding.richEditor.setHeading(6)
+                JUSTIFYCENTER -> binding.richEditor.setAlignCenter()
+                JUSTIFYLEFT -> binding.richEditor.setAlignLeft()
+                JUSTIFYRIGHT -> binding.richEditor.setAlignRight()
+                else -> { }
+            }
+        }
+
+        binding.richEditor.setOnFocusChangeListener { view, focused ->
+            binding.rvRich.isVisible = focused
+        }
+    }
+
+    private var adapter: RichFeatureAdapter? = null
+    private fun init() {
+        val data = viewModel.getRichFeatures()
+        adapter = RichFeatureAdapter()
+        binding.rvRich.adapter = adapter
+        adapter?.submitList(data)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveNote(): Boolean {
         val title = binding.etTitle.editText?.text.toString().trim()
-        val content = binding.etContent.editText?.text.toString().trim()
         val time = DataConverter.getCurrentTime()
 
         if (title.isEmpty()) {
             binding.etTitle.error = "Title must not be empty"
-            binding.etTitle.editText?.setTextColor(Color.RED)
             binding.etTitle.requestFocus()
             return true
         }
 
-        if (content.isEmpty()) {
-            binding.etContent.error = "Title must not be empty"
-            binding.etContent.editText?.setTextColor(Color.RED)
-            binding.etContent.requestFocus()
-            return true
-        }
-        context?.let {
+        val content = if (binding.richEditor.html == null) "" else binding.richEditor.html.toString().trim()
 
+        if (!isPin) {
+            viewModel.addNote(
+                NoteData(
+                    title = title,
+                    content = content,
+                    createdAt = time,
+                    isPin = 1
+                )
+            )
+            isPin = false
+        } else {
+
+            viewModel.addNote(
+                NoteData(
+                    title = title,
+                    content = content,
+                    createdAt = time,
+                    isPin = 0
+                )
+            )
+            isPin = false
         }
-        viewModel.addNote(NoteData(title = title, content = content, createdAt = time))
         return false
     }
 
@@ -132,7 +215,7 @@ class AddNoteFragment : Fragment(R.layout.fragment_add) {
     private fun scheduleNotification() {
         val intent = Intent(requireContext().applicationContext, Notification1::class.java)
         val title = binding.etTitle.editText?.text.toString()
-        val message = binding.etContent.editText?.text.toString()
+        val message = binding.richEditor.html.toString()
         intent.putExtra(titleExtra, title)
         intent.putExtra(messageExtra, message)
 
@@ -146,14 +229,18 @@ class AddNoteFragment : Fragment(R.layout.fragment_add) {
         val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val time = getTime()
         val date = Date(time)
-        val dateFormat = android.text.format.DateFormat.getLongDateFormat(requireContext().applicationContext)
-        val timeFormat = android.text.format.DateFormat.getTimeFormat(requireContext().applicationContext)
+        val dateFormat =
+            android.text.format.DateFormat.getLongDateFormat(requireContext().applicationContext)
+        val timeFormat =
+            android.text.format.DateFormat.getTimeFormat(requireContext().applicationContext)
 
-        Log.d("DDD","Date -> $date" +
-                " DateFormat -> $dateFormat" +
-                " TimeFormat -> $timeFormat")
+        Log.d(
+            "DDD", "Date -> $date" +
+                    " DateFormat -> $dateFormat" +
+                    " TimeFormat -> $timeFormat"
+        )
 
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time,pendingIntent)
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent)
     }
 
     private fun getTime(): Long {
@@ -179,7 +266,8 @@ class AddNoteFragment : Fragment(R.layout.fragment_add) {
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel(channelID, name, importance)
         channel.description = desc
-        val notificationManager = requireContext().getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            requireContext().getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
 }

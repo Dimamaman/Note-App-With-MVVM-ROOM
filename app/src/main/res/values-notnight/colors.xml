@@ -27,15 +27,21 @@
     <color name="gray_700">#61677D</color>
     <color name="gray_800">#3B4054</color>
     <color name="gray_900">#262626</color>
+    <color name="plus_button">#3461FD</color>
 
     <color name="window_background">@color/gray_50</color>
     <color name="red">#EA4545</color>
     <color name="red_dark">#D90429</color>
     <color name="green">#21BF73</color>
     <color name="add_btn_text_color">#ffff</color>
+    <color name="background_bottomSheet">#E0E5EB</color>
+
+
 
     <color name="actionBarColor">#3461FD</color>
     <color name="navigationDrawerBackGround">#ffff</color>
     <color name="noteItemBackground">#ffff</color>
+    <color name="noteItemTextColor">#000</color>
     <color name="floatingActionButtonColor">#F5F9FE</color>
+    <color name="statusBarColor">#3461FD</color>
 </resources>

@@ -2,6 +2,7 @@ package uz.gita.dimanote.domain.repository
 
 import androidx.lifecycle.LiveData
 import uz.gita.dimanote.data.model.NoteData
+import uz.gita.dimanote.presentation.adapter.data.RichFeatureModel
 
 interface AppRepository {
     fun addNote(noteData: NoteData)
@@ -25,4 +26,10 @@ interface AppRepository {
     fun deleteNotesFromTrash()
 
     fun search(search: String): List<NoteData>
+
+    fun pinNote(noteId: Long)
+
+    fun unPinNote(noteId: Long)
+
+    fun getRichFeaturesData(): List<RichFeatureModel>
 }
