@@ -15,7 +15,7 @@
         app:showAsAction="always"
         android:title="@string/reminder" />
     <item
-        android:id="@+id/action_edit"
+        android:id="@+id/action_notify"
         android:enabled="true"
         android:icon="@drawable/notification_bell"
         android:title="@string/reminder"

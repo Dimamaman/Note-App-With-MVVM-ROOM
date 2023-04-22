@@ -76,7 +76,7 @@ class AddNoteFragment : Fragment(R.layout.fragment_add) {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
-                    R.id.action_edit -> {
+                    R.id.action_notify -> {
                         if (binding.etTitle.editText?.text.toString().isEmpty()) {
                             Toast.makeText(
                                 requireContext(),
@@ -99,6 +99,11 @@ class AddNoteFragment : Fragment(R.layout.fragment_add) {
                                 .show()
                             true
                         }
+                        true
+                    }
+
+                    R.id.action_undo -> {
+                        binding.richEditor.undo()
                         true
                     }
 
